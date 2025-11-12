@@ -65,7 +65,6 @@ export default function MenuTree() {
     setLoadingModal(true);
 
     const newParentMenu = {
-      id: crypto.randomUUID(),
       name: name,
       depth: 1,
       isVisible: false,
