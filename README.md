@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend (Next.js)
 
-## Getting Started
+Folder ini berisi aplikasi frontend untuk proyek — sebuah aplikasi Next.js 16 yang dibangun dengan React 19.
 
-First, run the development server:
+README ini menjelaskan isi frontend dan langkah-langkah untuk men-setup serta menjalankannya secara lokal di Windows (PowerShell) atau platform lain.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Ringkasan singkat
+
+- Framework: Next.js 16
+- UI: React 19
+- Styling: Tailwind CSS (v4) dengan beberapa variabel CSS kustom di `app/globals.css`
+- Paket ikon: `lucide-react`
+- Komponen penting: sidebar aplikasi berada di `components/app-sidebar.tsx` dan primitive UI untuk sidebar berada di `components/ui/sidebar.tsx`.
+
+## Prasyarat
+
+- Node.js (disarankan 18.x atau lebih baru)
+- npm (atau yarn/pnpm jika kamu lebih suka; perintah di bawah menggunakan npm)
+
+Cek versi Node dan npm:
+
+```powershell
+node -v
+npm -v
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+````
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Instalasi dependensi
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Dari folder `frontend` jalankan:
 
-## Learn More
+```powershell
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Menjalankan server pengembangan
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Jalankan Next.js dalam mode dev (hot reload aktif):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```powershell
+npm run dev
+```
 
-## Deploy on Vercel
+Buka http://localhost:3000 di browser
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Build untuk produksi
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Untuk membuat bundle produksi:
+
+```powershell
+npm run build
+```
+
+Untuk menjalankan server produksi yang sudah dibuild secara lokal:
+
+```powershell
+npm run start
+```
+
+## Linting
+
+Jalankan ESLint (proyek menggunakan ESLint):
+
+```powershell
+npm run lint
+```
+````
