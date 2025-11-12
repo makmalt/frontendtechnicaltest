@@ -109,7 +109,7 @@ export default function MenuTree() {
 
   return (
     <div className="w-screen max-w-6xl mx-auto p-6 bg-transparent min-h-[calc(100vh-3rem)]">
-      <div className="flex flex-col md:flex-row gap-6 h-[calc(100vh-3rem)]">
+      <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-3rem)]">
         {/* kiri */}
         <div className="flex flex-col w-full md:w-1/2 space-y-4 md:overflow-hidden">
           <div className="gap-2 hidden md:flex">
@@ -212,7 +212,7 @@ export default function MenuTree() {
         </div>
         {/*kanan*/}
         <div className="flex items-center justify-end w-full md:w-1/2">
-          <div className="w-full max-w-md md:-translate-y-10 md:translate-x-6 space-y-4">
+          <div className="w-full max-w-md sm:-translate-y-10 sm:translate-x-6 space-y-4">
             <FormPage
               id={id}
               depth={depth || 0}

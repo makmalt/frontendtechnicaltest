@@ -1,25 +1,35 @@
+"use client";
+
 import { useShallow } from "zustand/shallow";
 import Form from "../components/form";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { updateMenu } from "@/lib/api";
 import { useMenuStore } from "@/stores/menuStore";
+import { FormEvent } from "react";
 
-const FormPage = ({
+type FormPageProps = {
+  id?: string,
+  depth?: number,
+  parentId?: string | null,
+  nameMenu?: string,
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+};
+
+export default function FormPage({
   id = "",
   depth = 1,
   parentId = null,
   nameMenu = "",
   handleChange,
-}) => {
-  const { fetchMenu, menuItems } = useMenuStore(
+}: FormPageProps) {
+  const { fetchMenu } = useMenuStore(
     useShallow((state) => ({
       fetchMenu: state.fetchMenu,
-      menuItems: state.menuItems,
     }))
   );
 
-  const handleUpdateSubmit = async (e) => {
+  const handleUpdateSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     console.log("Updated Menu Data:", {
@@ -42,21 +52,22 @@ const FormPage = ({
       alert("Failed to update menu.");
     }
   };
+
   return (
     <>
       <Form handleSubmit={handleUpdateSubmit}>
-        <label htmlFor="MenuID">MenuID</label>
+        <label htmlFor="MenuID">Menu ID</label>
         <Input name="id" type="text" value={id ?? ""} disabled />
 
         <label htmlFor="depth">Depth</label>
-        <Input name="depth" type="number" value={depth ?? ""} disabled />
+        <Input name="depth" type="number" value={depth ?? 0} disabled />
 
-        <label htmlFor="parentId">Parent Data</label>
+        <label htmlFor="parentId">Parent ID</label>
         <Input
           className="disabled"
           name="parentId"
           type="text"
-          value={parentId ?? null}
+          value={parentId ?? ""}
           disabled
         />
 
@@ -67,8 +78,9 @@ const FormPage = ({
           value={nameMenu ?? ""}
           onChange={handleChange}
         />
+
         <Button
-          variant="primary"
+          variant={null}
           type="submit"
           className="border mt-4 bg-[#0C49B0] text-white hover:bg-blue-900 rounded-full cursor-pointer"
         >
@@ -77,6 +89,4 @@ const FormPage = ({
       </Form>
     </>
   );
-};
-
-export default FormPage;
+}

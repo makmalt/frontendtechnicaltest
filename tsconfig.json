@@ -29,9 +29,9 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "components/form.jsx",
-    "components/modal.jsx",
-    "components-mainpage/formPage.jsx"
+    "components/form.tsx",
+    "components/modal.tsx",
+    "components-mainpage/formPage.tsx"
   ],
   "exclude": ["node_modules"]
 }
