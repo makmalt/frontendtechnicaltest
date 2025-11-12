@@ -2,10 +2,14 @@ import { create } from "zustand";
 import { getMenuTree } from "@/lib/api";
 import { useFormStore } from "@/stores/activeStore";
 
-type MenuItem = {
+export type MenuItem = {
   id: string;
   name: string;
-  path: string;
+  path?: string | null;
+  depth: number;
+  parentId: string | null;
+  iconType?: "FOLDER" | "MENU";
+  isVisible?: boolean;
   children?: MenuItem[];
 };
 

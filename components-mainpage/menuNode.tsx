@@ -6,7 +6,7 @@ import { useAddMenuStore } from "@/stores/addMenuStore";
 import Modal from "@/components/modal";
 import { Input } from "@/components/ui/input";
 import { createMenu, deleteMenu } from "@/lib/api";
-import { useMenuStore } from "@/stores/menuStore";
+import { useMenuStore, MenuItem } from "@/stores/menuStore";
 
 export default function MenuNode({
   node,
@@ -14,7 +14,7 @@ export default function MenuNode({
   expandedNodes,
   setExpandedNodes,
 }: {
-  node: any;
+  node: MenuItem;
   level: number;
   expandedNodes: Set<string>;
   setExpandedNodes: React.Dispatch<React.SetStateAction<Set<string>>>;
@@ -185,7 +185,7 @@ export default function MenuNode({
             }}
           />
           <div className="pl-4 space-y-1">
-            {node.children.map((child: any) => (
+            {node.children?.map((child: MenuItem) => (
               <MenuNode
                 key={child.id}
                 node={child}
@@ -200,10 +200,14 @@ export default function MenuNode({
       {openModal && (
         <Modal
           title="Add New Menu"
-          setOpenModal={() => setOpenModal(false)}
+          setOpenModal={() => {
+            setOpenModal(false);
+            reset();
+          }}
           tombol={"Save"}
           handleSubmit={handleAddSubmit}
           loading={loadingModal}
+          variant={"default"}
         >
           <label htmlFor="parentId">Parent ID</label>
           <Input type="text" name="parentId" value={parentId || ""} disabled />
@@ -223,11 +227,12 @@ export default function MenuNode({
         <Modal
           title="Delete Menu"
           setOpenModal={() => setDeleteModal(false)}
+          loading={loadingModal}
           tombol={"Delete"}
           variant={"destructive"}
           handleSubmit={handleDeleteSubmit}
         >
-          <p>Are you sure you want to delete the menu"{node.name}"?</p>
+          <p>Are you sure you want to delete the menu`{node.name}`?</p>
         </Modal>
       )}
     </div>

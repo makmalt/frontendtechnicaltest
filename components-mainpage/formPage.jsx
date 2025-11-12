@@ -8,8 +8,8 @@ import { useMemo } from "react";
 
 const FormPage = ({
   id = "",
-  depth = null,
-  parentId = null,
+  depth = 1,
+  parentId = "",
   nameMenu = "",
   handleChange,
 }) => {

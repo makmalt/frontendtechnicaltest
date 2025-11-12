@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
 import { FolderIcon, Grid2x2Icon, Grid3x3 } from "lucide-react";
 import { Sidebar, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
-import { useMenuStore } from "@/stores/menuStore";
+import { MenuItem,  useMenuStore } from "@/stores/menuStore";
 import { useShallow } from "zustand/shallow";
 import { useActiveStore } from "@/stores/activeStore";
 import { useMenuActiveStore } from "@/stores/menuStore";
@@ -55,21 +54,21 @@ export function AppSidebar() {
       <Grid2x2Icon className="w-6 h-6" />
     );
 
-  const hasVisibleChild = (menu: any): boolean => {
+  const hasVisibleChild = (menu: MenuItem): boolean => {
     if (!menu?.children || menu.children.length === 0) return false;
     return menu.children.some(
-      (child: any) => child.isVisible || hasVisibleChild(child)
+      (child: MenuItem) => child.isVisible || hasVisibleChild(child)
     );
   };
 
-  const isMenuOrChildActive = (menu: any): boolean => {
+  const isMenuOrChildActive = (menu: MenuItem): boolean => {
     if (menu.id === activeId) return true;
     return (
-      menu.children?.some((child: any) => isMenuOrChildActive(child)) ?? false
+      menu.children?.some((child: MenuItem) => isMenuOrChildActive(child)) ?? false
     );
   };
 
-  const renderMenu = (menus: any[]) => {
+  const renderMenu = (menus: MenuItem[]) => {
     if (!menus?.length) return null;
 
     return (
@@ -117,7 +116,7 @@ export function AppSidebar() {
                       {isOpen ? (
                         <FolderIcon fill="white" className="w-6 h-6" />
                       ) : (
-                        getIcon(menu.iconType)
+                        getIcon(menu.iconType ? "FOLDER" : "MENU")
                       )}
                       <span>{menu.name}</span>
                     </div>
@@ -128,8 +127,8 @@ export function AppSidebar() {
                 {isExpandable && (isOpen || isActive) && (
                   <div className="space-y-1 bg-blue-600">
                     {children
-                      .filter((child: any) => child.isVisible)
-                      .map((child: any, index: number) => {
+                      .filter((child: MenuItem) => child.isVisible)
+                      .map((child: MenuItem) => {
                         const isChildActive = isMenuOrChildActive(child);
                         const hasGrandChildren = hasVisibleChild(child);
                         const isChildOpen = expanded[child.id] ?? false;
@@ -147,14 +146,14 @@ export function AppSidebar() {
                                   }`}
                                 >
                                   <div className="flex items-center gap-3">
-                                    {getIcon(child.iconType)}
+                                    {getIcon(child.iconType ? "FOLDER" : "MENU")}
                                     <span>{child.name}</span>
                                   </div>
                                 </div>
 
                                 {isChildOpen && (
                                   <div className="ml-4 mt-1 border-l border-blue-400 pl-2">
-                                    {renderMenu(child.children)}
+                                    {renderMenu(child.children || [])}
                                   </div>
                                 )}
                               </>
@@ -169,7 +168,7 @@ export function AppSidebar() {
                                     : "text-white hover:bg-blue-500"
                                 }`}
                               >
-                                {getIcon(child.iconType)}
+                                {getIcon(child.iconType? "FOLDER" : "MENU")}
                                 <span>{child.name}</span>
                               </div>
                             )}

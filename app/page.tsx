@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Grid2x2, LayoutGrid } from "lucide-react";
-import { useMenuStore, useMenuActiveStore } from "@/stores/menuStore";
+import { LayoutGrid } from "lucide-react";
+import { useMenuStore, useMenuActiveStore, MenuItem } from "@/stores/menuStore";
 import { useShallow } from "zustand/shallow";
 import { useActiveStore, useFormStore } from "@/stores/activeStore";
 import { AppSelect as Select } from "@/components-mainpage/app-select";
@@ -90,7 +90,7 @@ export default function MenuTree() {
 
   const handleExpandAll = () => {
     const allIds = new Set<string>();
-    const collectIds = (menus: any[]) => {
+    const collectIds = (menus: MenuItem[]) => {
       menus.forEach((menu) => {
         allIds.add(menu.id);
         if (menu.children?.length) collectIds(menu.children);
@@ -197,6 +197,7 @@ export default function MenuTree() {
               handleSubmit={handleSubmitMenu}
               tombol={"Save"}
               loading={loadingModal}
+              variant={"default"}
             >
               <Input
                 type="text"
@@ -212,8 +213,8 @@ export default function MenuTree() {
           <div className="w-full max-w-md md:-translate-y-10 md:translate-x-6 space-y-4">
             <FormPage
               id={id}
-              depth={depth}
-              parentId={parentId}
+              depth={depth || 0}
+              parentId={parentId || ""}
               nameMenu={nameMenu}
               handleChange={handleChange}
             />
