@@ -32,3 +32,13 @@ export async function createMenu(data: any) {
     throw error;
   }
 }
+
+export async function deleteMenu(id: string) {
+  try {
+    const response = await axios.delete(`${baseUrl}/api/menus/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting menu with id ${id}:`, error);
+    throw error;
+  }
+}

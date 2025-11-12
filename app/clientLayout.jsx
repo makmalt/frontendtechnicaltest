@@ -5,14 +5,14 @@ import { useShallow } from "zustand/shallow";
 import { Folder } from "lucide-react";
 
 export default function ClientLayout({ children }) {
-  const { name } = useActiveStore(
+  const { nameActive } = useActiveStore(
     useShallow((state) => ({
-      name: state.name,
+      nameActive: state.nameActive  ,
     }))
   );
   return (
     <>
-      <div className="text-sm ms-6 flex gap-1 text-gray-600"><Folder size={20}/>/ {name}</div>
+      <div className="text-sm ms-6 flex gap-1 text-gray-600"><Folder size={20}/>/ {nameActive}</div>
       {children}
     </>
   );

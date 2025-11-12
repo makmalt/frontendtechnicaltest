@@ -2,11 +2,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FolderIcon, Grid2x2Icon, ChevronRight } from "lucide-react";
+import { FolderIcon, Grid2x2Icon, Grid3x3 } from "lucide-react";
 import { Sidebar, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { useMenuStore } from "@/stores/menuStore";
 import { useShallow } from "zustand/shallow";
 import { useActiveStore } from "@/stores/activeStore";
+import { useMenuActiveStore } from "@/stores/menuStore";
 
 export function AppSidebar() {
   const { menuItems, fetchMenu, loading, error } = useMenuStore(
@@ -18,9 +19,15 @@ export function AppSidebar() {
     }))
   );
 
-  const { setName } = useActiveStore(
+  const { listItems } = useMenuActiveStore(
     useShallow((state) => ({
-      setName: state.setName,
+      listItems: state.listItems,
+    }))
+  );
+
+  const { setNameActive } = useActiveStore(
+    useShallow((state) => ({
+      setNameActive: state.setNameActive,
     }))
   );
 
@@ -38,14 +45,14 @@ export function AppSidebar() {
 
   const handleActive = (id: string, name: string) => {
     setActiveId(id);
-    setName(name);
+    setNameActive(name);
   };
 
   const getIcon = (type: string) =>
     type === "FOLDER" ? (
-      <FolderIcon className="w-4 h-4" />
+      <FolderIcon className="w-6 h-6" />
     ) : (
-      <Grid2x2Icon className="w-4 h-4" />
+      <Grid2x2Icon className="w-6 h-6" />
     );
 
   const hasVisibleChild = (menu: any): boolean => {
@@ -73,7 +80,6 @@ export function AppSidebar() {
           const hasVisibleChildren = hasVisibleChild(menu);
           const isExpandable = hasVisibleChildren;
           const isOpen = expanded[menu.id] ?? false;
-
           const isActive = isMenuOrChildActive(menu);
 
           if (!visible && hasVisibleChildren) {
@@ -88,40 +94,42 @@ export function AppSidebar() {
 
           const handleClick = (e: React.MouseEvent) => {
             if (isExpandable) toggleExpand(menu.id, e);
-            else setActiveId(menu.id);
+            else handleActive(menu.id, menu.name);
           };
 
           return (
             <SidebarMenuItem key={menu.id}>
+              {/* wrapper utama */}
               <div
-                className={`transition-all duration-200 rounded-2xl overflow-hidden ${
-                  isActive ? "bg-blue-600 text-white" : ""
+                className={`transition-all duration-200 overflow-hidden rounded-xl ${
+                  isActive || isOpen ? "bg-blue-600 text-white" : ""
                 }`}
               >
                 {/* parent */}
                 {visible && (
                   <div
                     onClick={handleClick}
-                    className={`flex items-center justify-between w-full px-4 py-2 rounded-md text-sm font-medium cursor-pointer transition-all ${
+                    className={`flex items-center justify-between w-full px-4 py-2 text-sm font-medium cursor-pointer transition-colors ${
                       isActive ? "text-white" : "hover:bg-blue-700 text-white"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      {getIcon(menu.iconType)}
+                      {isOpen ? (
+                        <FolderIcon fill="white" className="w-6 h-6" />
+                      ) : (
+                        getIcon(menu.iconType)
+                      )}
                       <span>{menu.name}</span>
                     </div>
                   </div>
                 )}
 
+                {/* children */}
                 {isExpandable && (isOpen || isActive) && (
-                  <div
-                    className={`mt-1 p-2 space-y-1 rounded-2xl ${
-                      isActive ? "bg-blue-600" : "bg-blue-700/40"
-                    }`}
-                  >
+                  <div className="space-y-1 bg-blue-600">
                     {children
                       .filter((child: any) => child.isVisible)
-                      .map((child: any) => {
+                      .map((child: any, index: number) => {
                         const isChildActive = isMenuOrChildActive(child);
                         const hasGrandChildren = hasVisibleChild(child);
                         const isChildOpen = expanded[child.id] ?? false;
@@ -132,7 +140,7 @@ export function AppSidebar() {
                               <>
                                 <div
                                   onClick={(e) => toggleExpand(child.id, e)}
-                                  className={`flex items-center justify-between w-full px-3 py-2 rounded-md text-sm transition-all cursor-pointer ${
+                                  className={`flex items-center justify-between w-full px-5 py-2 text-sm transition-all cursor-pointer ${
                                     isChildActive
                                       ? "bg-blue-500 text-white"
                                       : "text-white hover:bg-blue-500"
@@ -142,12 +150,6 @@ export function AppSidebar() {
                                     {getIcon(child.iconType)}
                                     <span>{child.name}</span>
                                   </div>
-                                  <ChevronRight
-                                    size={14}
-                                    className={`transition-transform duration-200 ${
-                                      isChildOpen ? "rotate-90" : ""
-                                    }`}
-                                  />
                                 </div>
 
                                 {isChildOpen && (
@@ -158,13 +160,12 @@ export function AppSidebar() {
                               </>
                             ) : (
                               <div
-                                // onClick={() => setActiveId(child.id)}
                                 onClick={() =>
                                   handleActive(child.id, child.name)
                                 }
-                                className={`flex items-center gap-3 w-full px-3 py-2 rounded-md text-sm transition-all cursor-pointer ${
+                                className={`flex items-center gap-3 w-full px-5 py-2 text-sm transition-all cursor-pointer ${
                                   isChildActive
-                                    ? "bg-white text-blue-700"
+                                    ? "bg-blue-500 text-white"
                                     : "text-white hover:bg-blue-500"
                                 }`}
                               >
@@ -185,15 +186,36 @@ export function AppSidebar() {
     );
   };
 
-  if (loading)
-    return <div className="p-4 text-sm text-gray-400">Loading menus...</div>;
   if (error)
     return <div className="p-4 text-sm text-red-400">Error: {error}</div>;
 
   return (
     <Sidebar variant="floating" collapsible="offcanvas">
+      <div className="flex ms-5 me-auto mt-5">
+        <Grid3x3
+          size={60}
+          className="text-sidebar"
+          strokeWidth={2}
+          fill="white"
+        />
+        <div className="mt-1 text-xs font-semibold">
+          Solusi <br /> Teknologi <br />
+          Kreatif
+        </div>
+      </div>
+
       <div className="flex flex-col h-full text-white p-4 space-y-1">
-        {menuItems && menuItems.length > 0 ? (
+        {loading ? (
+          <div className="animate-pulse space-y-2">
+            <div className="h-4 bg-blue-800/40 rounded w-3/4" />
+            <div className="h-4 bg-blue-800/40 rounded w-2/3" />
+            <div className="h-4 bg-blue-800/40 rounded w-1/2" />
+          </div>
+        ) : error ? (
+          <div className="p-4 text-sm text-red-400">Error: {error}</div>
+        ) : listItems && listItems.length > 0 ? (
+          renderMenu(listItems)
+        ) : menuItems && menuItems.length > 0 ? (
           renderMenu(menuItems)
         ) : (
           <div className="text-gray-400 text-sm">No menu available</div>

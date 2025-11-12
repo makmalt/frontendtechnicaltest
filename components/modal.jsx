@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 
 const Modal = ({
-  title,
+  title = "Modal Title",
   setOpenModal,
   handleSubmit,
   loading,
@@ -28,9 +28,13 @@ const Modal = ({
           ✕
         </button>
 
-        <h3 className="font-bold text-lg mb-4">{title}</h3>
+        {title === "Delete Menu" ? (
+          <h3 className="font-medium text-lg mb-4 text-red-500">{title}</h3>
+        ) : (
+          <h3 className="font-medium text-lg mb-4">{title}</h3>
+        )}
 
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
           {children}
           {loading ? (
             <span>Loading...</span>

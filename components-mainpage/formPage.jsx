@@ -1,7 +1,7 @@
 import { useShallow } from "zustand/shallow";
-import Form from "./form";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import Form from "../components/form";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import { updateMenu } from "@/lib/api";
 import { useMenuStore } from "@/stores/menuStore";
 import { useMemo } from "react";
@@ -67,13 +67,19 @@ const FormPage = ({
     <>
       <Form handleSubmit={handleUpdateSubmit}>
         <label htmlFor="MenuID">MenuID</label>
-        <Input name="id" type="text" value={id ?? ""} readOnly />
+        <Input name="id" type="text" value={id ?? ""} disabled />
 
         <label htmlFor="depth">Depth</label>
-        <Input name="depth" type="text" value={depth ?? ""} readOnly />
+        <Input name="depth" type="text" value={depth ?? ""} disabled />
 
         <label htmlFor="parentId">Parent Data</label>
-        <Input name="parentId" type="text" value={parentName ?? ""} readOnly />
+        <Input
+          className="disabled"
+          name="parentId"
+          type="text"
+          value={parentName ?? ""}
+          disabled
+        />
 
         <label htmlFor="nameMenu">Name</label>
         <Input
@@ -85,7 +91,7 @@ const FormPage = ({
         <Button
           variant="primary"
           type="submit"
-          className="border mt-4 bg-[#0C49B0] text-white hover:bg-blue-900 rounded-full"
+          className="border mt-4 bg-[#0C49B0] text-white hover:bg-blue-900 rounded-full cursor-pointer"
         >
           Update Menu
         </Button>

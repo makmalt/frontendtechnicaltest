@@ -20,6 +20,8 @@ type SelectWithAddProps = {
   onValueChange?: (value: string) => void;
   onAdd?: () => void;
   className?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 export function AppSelect({
@@ -29,9 +31,11 @@ export function AppSelect({
   onValueChange,
   onAdd,
   className,
+  open,
+  onOpenChange,
 }: SelectWithAddProps) {
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select value={value} onValueChange={onValueChange} open={open} onOpenChange={onOpenChange}>
       <SelectTrigger
         className={cn(
           "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",

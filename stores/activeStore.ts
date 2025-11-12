@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
 type activeState = {
-  name: string;
-  setName: (name: string) => void;
+  nameActive: string;
+  setNameActive: (nameActive: string) => void;
 };
 
 export const useActiveStore = create<activeState>((set) => ({
-  name: "Systems",
-  setName: (name: string) => set({ name }),
+  nameActive: "Systems",
+  setNameActive: (nameActive: string) => set({ nameActive }),
 }));
 
 type formState = {
@@ -15,13 +15,16 @@ type formState = {
   depth: number | null;
   parentId: string | null;
   nameMenu: string;
+  activeNodeId: string | null;
   setForm: (form: {
     id: string;
     depth: number | null;
     parentId: string | null;
     nameMenu: string;
+    activeNodeId: string | null;
   }) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  reset: () => void;
 };
 
 export const useFormStore = create<formState>((set) => ({
@@ -29,6 +32,7 @@ export const useFormStore = create<formState>((set) => ({
   depth: null,
   parentId: "",
   nameMenu: "",
+  activeNodeId: null,
   setForm: (data: {
     id: string;
     depth: number | null;
@@ -39,4 +43,12 @@ export const useFormStore = create<formState>((set) => ({
     const { name, value } = e.target;
     set((state) => ({ ...state, [name]: value }));
   },
+  reset: () =>
+    set({
+      id: "",
+      depth: null,
+      parentId: "",
+      nameMenu: "",
+      activeNodeId: null,
+    }),
 }));
