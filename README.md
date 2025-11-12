@@ -1,3 +1,4 @@
+![alt text](image.png)
 # Frontend (Next.js)
 
 Folder ini berisi aplikasi frontend untuk proyek — sebuah aplikasi Next.js 16 yang dibangun dengan React 19.
