@@ -199,11 +199,13 @@ export default function MenuTree() {
               loading={loadingModal}
               variant={"default"}
             >
+              <label htmlFor="name">Menu Name (root)</label>
               <Input
                 type="text"
                 name="name"
                 value={name}
                 onChange={handleAddChange}
+                required
               />
             </Modal>
           )}

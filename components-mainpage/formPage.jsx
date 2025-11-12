@@ -4,12 +4,11 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { updateMenu } from "@/lib/api";
 import { useMenuStore } from "@/stores/menuStore";
-import { useMemo } from "react";
 
 const FormPage = ({
   id = "",
   depth = 1,
-  parentId = "",
+  parentId = null,
   nameMenu = "",
   handleChange,
 }) => {
@@ -19,23 +18,6 @@ const FormPage = ({
       menuItems: state.menuItems,
     }))
   );
-
-  // cari nama parent berdasarkan parentId
-  const parentName = useMemo(() => {
-    if (!parentId) return ""; // null/undefined
-
-    const findParent = (menus) => {
-      for (const menu of menus) {
-        if (menu.id === parentId) return menu.name;
-        if (menu.children?.length) {
-          const found = findParent(menu.children);
-          if (found) return found;
-        }
-      }
-      return null;
-    };
-    return findParent(menuItems) ?? "(Unknown)";
-  }, [menuItems, parentId]);
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
@@ -48,15 +30,12 @@ const FormPage = ({
     });
 
     try {
-      const response = await updateMenu(id, {
+      await updateMenu(id, {
         id,
         depth,
-        parentId,
+        parentId: parentId || null,
         name: nameMenu,
       });
-      if (response.ok) {
-        console.log("Menu:", response.data);
-      }
       await fetchMenu();
     } catch (error) {
       console.error("Error updating menu:", error);
@@ -70,14 +49,14 @@ const FormPage = ({
         <Input name="id" type="text" value={id ?? ""} disabled />
 
         <label htmlFor="depth">Depth</label>
-        <Input name="depth" type="text" value={depth ?? ""} disabled />
+        <Input name="depth" type="number" value={depth ?? ""} disabled />
 
         <label htmlFor="parentId">Parent Data</label>
         <Input
           className="disabled"
           name="parentId"
           type="text"
-          value={parentName ?? ""}
+          value={parentId ?? null}
           disabled
         />
 

@@ -219,6 +219,7 @@ export default function MenuNode({
             name="name"
             value={name}
             onChange={handleAddChange}
+            required
           />
         </Modal>
       )}

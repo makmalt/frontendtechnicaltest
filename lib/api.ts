@@ -17,7 +17,6 @@ export async function updateMenu(id: string, data: any) {
     const response = await axios.put(`${baseUrl}/api/menus/${id}`, data);
     return response.data;
   } catch (error) {
-    console.error(`Error updating menu with id ${id}:`, error);
     throw error;
   }
 }

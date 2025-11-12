@@ -116,7 +116,7 @@ export function AppSidebar() {
                       {isOpen ? (
                         <FolderIcon fill="white" className="w-6 h-6" />
                       ) : (
-                        getIcon(menu.iconType ? "FOLDER" : "MENU")
+                        getIcon(menu.iconType === "FOLDER" ? "FOLDER" : "MENU")
                       )}
                       <span>{menu.name}</span>
                     </div>
@@ -146,7 +146,7 @@ export function AppSidebar() {
                                   }`}
                                 >
                                   <div className="flex items-center gap-3">
-                                    {getIcon(child.iconType ? "FOLDER" : "MENU")}
+                                    {getIcon(child.iconType === "FOLDER" ? "FOLDER" : "MENU")}
                                     <span>{child.name}</span>
                                   </div>
                                 </div>
@@ -168,7 +168,7 @@ export function AppSidebar() {
                                     : "text-white hover:bg-blue-500"
                                 }`}
                               >
-                                {getIcon(child.iconType? "FOLDER" : "MENU")}
+                                {getIcon(child.iconType=== "FOLDER" ? "FOLDER" : "MENU")}
                                 <span>{child.name}</span>
                               </div>
                             )}

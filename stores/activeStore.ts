@@ -30,7 +30,7 @@ type formState = {
 export const useFormStore = create<formState>((set) => ({
   id: "",
   depth: null,
-  parentId: "",
+  parentId: null,
   nameMenu: "",
   activeNodeId: null,
   setForm: (data: {
@@ -47,7 +47,7 @@ export const useFormStore = create<formState>((set) => ({
     set({
       id: "",
       depth: null,
-      parentId: "",
+      parentId: null,
       nameMenu: "",
       activeNodeId: null,
     }),
